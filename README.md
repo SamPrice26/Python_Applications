@@ -4,7 +4,7 @@ Hello, I'm Sam Price, a passionate graphic design educator embarking on an excit
 
 ## What's Happening Here? 🧐 
 
-In this repository, I'll demonstrate key GitHub functionalities to manage and track changes to projects. Here’s what you can expect:
+__In this repository, I'll demonstrate key GitHub functionalities to manage and track changes to projects. Here’s what you can expect:__
 
 ### Git and GitHub Demonstrations 
 
