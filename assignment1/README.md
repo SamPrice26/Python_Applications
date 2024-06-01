@@ -4,7 +4,7 @@ Hello, I'm Sam Price, a passionate graphic design educator embarking on an excit
 
 ## What's Happening Here? 🧐 
 
-In this repository, I'll demonstrate key GitHub functionalities to manage and track changes to projects. Here’s what you can expect:
+_In this repository, I'll demonstrate key GitHub functionalities to manage and track changes to projects. Here’s what you can expect:_
 
 ### Git and GitHub Demonstrations 
 
@@ -30,7 +30,11 @@ In this repository, I'll demonstrate key GitHub functionalities to manage and tr
 
 I've captured some key moments in this process. Here they are for you to see how it all unfolds!
 
-![Screenshot description](link-to-screenshot)
+![Creating a repository README, checking status, committing, pushing to remote](screenshots/Step-one.jpg)
+![Creating a new branch, adding files, gitgnore, pull to local](screenshots/Step-two.jpg)
+![Creating requirement txt](screenshots/Step-three.jpg)
+![Pull request](screenshots/Pull-request.png)
+![Merging to main branch](screenshots/Merging.png)
 
 ## Special Files in This Repository
 
