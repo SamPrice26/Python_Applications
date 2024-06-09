@@ -1,0 +1,39 @@
+# Dog Quiz Data
+
+# Questions
+What's your favorite activity?
+How do you feel about long walks?
+What's your ideal living situation?
+Do you enjoy socializing with others?
+How do you react to meeting new people?
+What's your favorite treat?
+Do you like dressing up in fancy costumes?
+Are you a shy or outgoing person?
+Do you like playing games?
+Do you prefer a cozy bed or an adventure?
+
+# Choices
+Playing fetch, Cuddling on the couch, Going for a run
+Love them!, They're okay, Prefer short walks
+Big backyard, Apartment living, Country life
+Love meeting new people, Prefer quiet time, Enjoy a mix
+I'm very friendly, I'm cautious at first, I prefer to observe from a distance
+Pig's ear, Dog biscuit, Anything off the counter
+Yes, No
+Shy, Outgoing
+Yes, No
+Cozy bed, Adventure
+
+
+# Breed Traits
+Labrador: 0, 1, 0, 0, 0, 0, 1, 1, 0, 1
+Golden Retriever: 0, 1, 0, 1, 0, 1, 0, 0, 1, 0
+German Shepherd: 0, 1, 0, 1, 0, 1, 1, 0, 1, 0
+Bulldog: 0, 0, 1, 0, 0, 1, 1, 0, 1, 1
+Pug:  0, 0, 0, 1, 1, 0, 1, 0, 1, 1
+Cocker Spaniel: 0, 1, 1, 1, 0, 0, 1, 0, 0, 1
+Chihuahua: 0, 1, 0, 0, 0, 0, 0, 1, 0, 1
+Italian Greyhound: 0, 0, 0, 0, 0, 1, 0, 1, 1, 1
+Husky: 0, 0, 1, 0, 0, 0, 0, 1, 1, 0
+Shih Tzu: 0, 0, 0, 1, 1, 1, 0, 1, 1, 1
+
