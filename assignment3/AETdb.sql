@@ -301,4 +301,30 @@ END //
 
 DELIMITER ;
 
+SHOW PROCEDURE STATUS WHERE Name = 'GetOrderStatusForCustomer';
+
+-- checking order status of different customers using id
+CALL GetOrderStatusForCustomer(6); 
+CALL GetOrderStatusForCustomer(3);
+CALL GetOrderStatusForCustomer(4); 
+
+-- query to delete discontinued product from db, however
+
+-- Add column 'discontinued' to the 'products' table 
+ALTER TABLE products 
+ADD COLUMN discontinued 
+TINYINT(1) NOT NULL DEFAULT 0; 
+
+-- updating a product to mark it as discontinued 
+UPDATE products 
+SET discontinued = 1 
+WHERE product_id = 8; 
+
+-- delete from order details
+DELETE FROM order_details 
+WHERE product_id = 8;
+
+-- delete discontinued product with product_id = 8 
+DELETE FROM 
+products WHERE product_id = 8;
 
