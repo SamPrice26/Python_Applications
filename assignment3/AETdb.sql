@@ -1,10 +1,13 @@
 -- create data base 
+
 CREATE DATABASE IF NOT EXISTS aet;
 
 -- use database aet
+
 USE aet;
 
 -- creates customers table 
+
 CREATE TABLE customers ( 
 customer_id INT PRIMARY KEY,
 business_name VARCHAR(200) NOT NULL, 
@@ -15,6 +18,7 @@ email VARCHAR(100) UNIQUE
 );
 
 -- create categories table
+
 CREATE TABLE categories ( 
 category_id INT PRIMARY KEY NOT NULL, 
 category_name VARCHAR(100), 
@@ -22,6 +26,7 @@ description TEXT
 );
 
 -- create table suppliers
+
 CREATE TABLE suppliers ( 
 supplier_id INT PRIMARY KEY, 
 supplier_name VARCHAR(50) NOT NULL, 
@@ -30,6 +35,7 @@ email VARCHAR(150) UNIQUE
 );
 
 -- create products table
+
 CREATE TABLE products ( 
 product_id INT PRIMARY KEY,
 product_name VARCHAR(255) NOT NULL,
@@ -41,6 +47,7 @@ FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)
 );
 
 -- create orders table
+
 CREATE TABLE orders ( 
 order_id INT PRIMARY KEY, 
 customer_id INT,
@@ -56,6 +63,7 @@ CONSTRAINT chk_order_status CHECK (order_status IN ('Pending', 'Processing', 'Sh
 
 
 -- create order details table
+
 CREATE TABLE order_details (
 order_detail_id INT PRIMARY KEY,
 order_id INT, 
@@ -67,6 +75,7 @@ FOREIGN KEY (product_id) REFERENCES products(product_id)
  );
 
 -- create address table 
+
 CREATE TABLE addresses ( 
 address_id INT PRIMARY KEY, 
 building_number VARCHAR(255), 
@@ -79,6 +88,7 @@ FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 
 
 -- adding data into customers with default value for contact number 
+
 INSERT INTO customers (customer_id, business_name, last_name, first_name, contact_number, email) 
 VALUES 
 (1, 'Airbus', 'Smith', 'Jerry', DEFAULT, 'jerry.smith@example.com'), 
@@ -92,6 +102,7 @@ VALUES
 
 
 -- suppliers data 
+
 INSERT INTO 
 suppliers (supplier_id, supplier_name, contact_number, email) 
 VALUES 
@@ -99,6 +110,7 @@ VALUES
 (2, 'CHERRY', '987-654-3210', 'info@cherry.com');
 
 -- categories data 
+
 INSERT INTO categories 
 (category_id, category_name, description) 
 VALUES 
@@ -116,6 +128,7 @@ VALUES
 (12, 'Shop Tools', 'Tools commonly used in workshops.');
 
 -- products data
+
 INSERT INTO 
 products (product_id, product_name, supplier_id, category_id, unit_price) 
 VALUES 
@@ -130,6 +143,7 @@ VALUES
 
 
 -- orders data 
+
 INSERT INTO orders 
 (order_id, customer_id, order_status, order_date, order_value, shipped_date, supplier_id) 
 VALUES 
@@ -144,6 +158,7 @@ VALUES
 
 
 -- order details data
+
 INSERT INTO order_details
  (order_detail_id, order_id, product_id, quantity_ordered, unit_price) 
 VALUES 
@@ -157,6 +172,7 @@ VALUES
 (8, 4, 2, 1, 150.00);
 
 -- address data 
+
 INSERT INTO addresses 
 (address_id, building_number, street_name, city, country, postcode, customer_id) 
 VALUES 
@@ -168,4 +184,121 @@ VALUES
 (6, '123', 'Main Street', 'Los Angeles', 'USA', '90001', 6), 
 (7, '456', 'Oak Avenue', 'New York', 'USA', '10001', 7), 
 (8, '789', 'Maple Lane', 'Chicago', 'USA', '60601', 8);
+
+-- use aet db
+
+USE aet;
+
+-- retrieving data queries 
+
+-- query product with the most sales and total profit 
+
+SELECT 
+p.product_id, 
+p.product_name, 
+SUM(od.quantity_ordered) AS total_sales,
+SUM(od.quantity_ordered * p.unit_price) AS total_price
+FROM products p 
+JOIN order_details od ON p.product_id = od.product_id 
+GROUP BY 
+p.product_id, p.product_name 
+ORDER BY 
+total_sales DESC 
+LIMIT 1; 
+
+-- query customer with the highest purchase amount 
+
+SELECT 
+c.customer_id, 
+c.business_name, 
+SUM(od.quantity_ordered * od.unit_price) AS total_purchase_amount 
+FROM 
+customers c 
+JOIN 
+orders o ON c.customer_id = o.customer_id 
+JOIN 
+order_details od ON o.order_id = od.order_id 
+GROUP BY
+ c.customer_id, c.business_name 
+ORDER BY
+ total_purchase_amount DESC 
+LIMIT 1; 
+
+
+-- query customer with highest orders amount
+
+SELECT 
+    c.customer_id,
+    c.business_name,
+    SUM(od.quantity_ordered) AS total_quantity_ordered
+FROM 
+    customers c
+LEFT JOIN 
+    orders o ON c.customer_id = o.customer_id
+LEFT JOIN 
+    order_details od ON o.order_id = od.order_id
+GROUP BY 
+    c.customer_id, c.business_name
+ORDER BY 
+    total_quantity_ordered DESC
+LIMIT 1;
+
+-- query most profitable month based on sales 
+
+SELECT 
+MONTHNAME(o.order_date) AS order_month, 
+SUM(od.quantity_ordered * od.unit_price) AS total_sales 
+FROM 
+orders o 
+JOIN order_details od ON o.order_id = od.order_id 
+GROUP BY 
+order_month 
+ORDER BY 
+total_sales DESC 
+LIMIT 1; 
+
+-- query customers who haven't ordered in over 2 months
+
+SELECT 
+    c.customer_id, 
+    c.business_name, 
+    MAX(o.order_date) AS last_order_date
+FROM 
+    customers c 
+LEFT JOIN
+    orders o ON c.customer_id = o.customer_id 
+GROUP BY
+    c.customer_id, c.business_name 
+HAVING 
+    MAX(o.order_date) < DATE_SUB(NOW(), INTERVAL 2 MONTH);
+    
+-- using IN to filter customers using specific order id
+
+SELECT c.*
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_id = 6;
+
+-- stored procedure to retrieve order statuses for a customer 
+
+ DELIMITER //
+
+CREATE PROCEDURE GetOrderStatusForCustomer (
+    IN customer_id_param INT
+)
+BEGIN
+    SELECT 
+        o.order_id, 
+        o.order_status, 
+        o.order_date, 
+        o.order_value, 
+        o.shipped_date 
+    FROM 
+        orders o 
+    WHERE 
+        o.customer_id = customer_id_param;
+END //
+
+DELIMITER ;
+
 
