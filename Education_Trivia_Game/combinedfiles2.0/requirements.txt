@@ -1,0 +1,2 @@
+# run this command in terminal 
+pip3 install Flask mysql-connector-python requests
